@@ -1,0 +1,17 @@
+name:                megadrive-palette
+version:             0.1.0.0
+synopsis:            Palettes for Sega Mega Drive (and Genesis)
+license:             BSD3
+license-file:        LICENSE
+author:              Brian McKenna
+maintainer:          brian@brianmckenna.org
+category:            Codec
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  exposed-modules:     Sega.MegaDrive.Palette
+  build-depends:       base
+                     , bytestring
+                     , mtl
+  default-language:    Haskell2010
