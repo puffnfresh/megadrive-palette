@@ -10,10 +10,9 @@ module Sega.MegaDrive.Palette (
 , readPalette
 ) where
 
-import Control.Applicative
-import Control.Monad.State
+import Control.Applicative (liftA3)
 import Data.Bits
-import Data.Word
+import Data.Word (Word8, Word16)
 import qualified Data.ByteString as BS
 
 data ColorNibble

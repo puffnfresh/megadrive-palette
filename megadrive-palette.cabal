@@ -13,5 +13,4 @@ library
   exposed-modules:     Sega.MegaDrive.Palette
   build-depends:       base
                      , bytestring
-                     , mtl
   default-language:    Haskell2010
