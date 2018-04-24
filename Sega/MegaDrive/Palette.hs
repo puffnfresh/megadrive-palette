@@ -4,7 +4,6 @@
 module Sega.MegaDrive.Palette (
   ColorNibble(..)
 , Color(..)
-, Palette(..)
 , nibbleToByte
 , readColorNibble
 , readColor
@@ -50,25 +49,6 @@ data Color a
   = Color a a a
   deriving (Eq, Ord, Show, Functor, Foldable)
 
-data Palette a
-  = Palette a
-            a
-            a
-            a
-            a
-            a
-            a
-            a
-            a
-            a
-            a
-            a
-            a
-            a
-            a
-            a
-  deriving (Eq, Ord, Show, Functor, Foldable)
-
 readColorNibble :: Word8 -> Maybe ColorNibble
 readColorNibble 0x0 =
   Just C_0
@@ -102,34 +82,12 @@ readColor w =
     r =
       fromIntegral (w .&. 0xF)
 
-word16be :: StateT BS.ByteString Maybe Word16
-word16be = do
-  bs <- get
-  (a, bs') <- lift (BS.uncons bs)
-  (b, bs'') <- lift (BS.uncons bs')
-  put bs''
-  return ((fromIntegral a `shiftL` 8) .|. fromIntegral b)
+word16s :: [Word8] -> [Word16]
+word16s (a:b:xs) =
+  ((fromIntegral a `shiftL` 8) .|. fromIntegral b) : word16s xs
+word16s _ =
+  []
 
-readPalette :: BS.ByteString -> Maybe (Palette (Color ColorNibble))
+readPalette :: BS.ByteString -> Maybe [Color ColorNibble]
 readPalette =
-  evalStateT p
-  where
-    c = do
-      word16be >>= lift . readColor
-    p =
-      Palette <$> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
-              <*> c
+  traverse readColor . word16s . BS.unpack
