@@ -32,19 +32,19 @@ nibbleToByte :: ColorNibble -> Word8
 nibbleToByte C_0 =
   0x00
 nibbleToByte C_2 =
-  0x22
+  0x20
 nibbleToByte C_4 =
-  0x44
+  0x40
 nibbleToByte C_6 =
-  0x66
+  0x60
 nibbleToByte C_8 =
-  0x88
+  0x80
 nibbleToByte C_A =
-  0xAA
+  0xA0
 nibbleToByte C_C =
-  0xCC
+  0xC0
 nibbleToByte C_E =
-  0xEE
+  0xE0
 
 data Color a
   = Color a a a
