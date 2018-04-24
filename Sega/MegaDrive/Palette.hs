@@ -3,7 +3,7 @@
 
 module Sega.MegaDrive.Palette (
   ColorNibble(..)
-, Color(..)
+, BGR(..)
 , nibbleToByte
 , readColorNibble
 , readColor
@@ -45,8 +45,8 @@ nibbleToByte C_C =
 nibbleToByte C_E =
   0xE0
 
-data Color a
-  = Color a a a
+data BGR a
+  = BGR a a a
   deriving (Eq, Ord, Show, Functor, Foldable)
 
 readColorNibble :: Word8 -> Maybe ColorNibble
@@ -69,11 +69,11 @@ readColorNibble 0xE =
 readColorNibble _ =
   Nothing
 
-readColor :: Word16 -> Maybe (Color ColorNibble)
+readColor :: Word16 -> Maybe (BGR ColorNibble)
 readColor w =
   if w .&. 0xF000 /= 0
   then Nothing
-  else liftA3 Color (readColorNibble b) (readColorNibble g) (readColorNibble r)
+  else liftA3 BGR (readColorNibble b) (readColorNibble g) (readColorNibble r)
   where
     b =
       fromIntegral (w `shiftR` 8)
@@ -88,6 +88,6 @@ word16s (a:b:xs) =
 word16s _ =
   []
 
-readPalette :: BS.ByteString -> Maybe [Color ColorNibble]
+readPalette :: BS.ByteString -> Maybe [BGR ColorNibble]
 readPalette =
   traverse readColor . word16s . BS.unpack
